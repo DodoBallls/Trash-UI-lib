@@ -41,3 +41,37 @@ MainTab:AddSlider("Slider Name", 0, 100, 50, function(value)
     print("Slider value:", value)
 end)
 ```
+# Trash-UI-lib
+
+## Loader Fix
+
+```lua
+local TrashLib = loadstring(game:HttpGet("https://raw.githubusercontent.com/DodoBallls/Trash-UI-lib/refs/heads/main/TRASH%20U"))()
+local Window = TrashLib:CreateWindow("[Window Title Here]")
+
+-- Button Example
+Window:CreateButton("[Button Name]", function()
+    -- [Your Code Here]
+end)
+
+-- Quick Reset Button Example
+Window:CreateButton("Quick Reset", function()
+    if game.Players.LocalPlayer.Character and game.Players.LocalPlayer.Character:FindFirstChild("Head") then
+        game.Players.LocalPlayer.Character.Head:Destroy()
+    end
+end)
+
+-- Toggle Example
+Window:CreateToggle("[Toggle Name]", function(state)
+    if state then
+        -- [Code for ON state]
+    else
+        -- [Code for OFF state]
+    end
+end)
+
+-- Slider Example
+Window:CreateSlider("[Slider Name]", [MinValue], [MaxValue], [DefaultValue], function(value)
+    -- [Your Code Here]
+end)
+```
