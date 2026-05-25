@@ -4,3 +4,8 @@ local window = lib:CreateWindow("BaconLib v"..version)
 
 local label = lib:CreateLabel(window, "Main")
 local textBox = lib:CreateTextBox(window, Enum.Font.Legacy, "Text", "Hello, World!")
+
+local button = lib:CreateButton(window, "Print Text", function()
+    print(textBox.Text)
+end)
+
