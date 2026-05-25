@@ -41,9 +41,10 @@ MainTab:AddSlider("Slider Name", 0, 100, 50, function(value)
     print("Slider value:", value)
 end)
 ```
-# Trash-UI-lib Fix if The previous isnt working
+# Trash-UI-lib fix when the previous isnt working (backup)
 
-## Loader Fix
+## 🚀 Complete Loader Template
+Copy and paste this script directly into your executor. Ensure you replace the template bracket placeholders (`[...]`) with your own titles and numerical values before executing, otherwise Luau will throw a syntax error.
 
 ```lua
 local TrashLib = loadstring(game:HttpGet("https://raw.githubusercontent.com/DodoBallls/Trash-UI-lib/refs/heads/main/TRASH%20U"))()
@@ -71,6 +72,38 @@ Window:CreateToggle("[Toggle Name]", function(state)
 end)
 
 -- Slider Example
+Window:CreateSlider("[Slider Name]", [MinValue], [MaxValue], [DefaultValue], function(value)
+    -- [Your Code Here]
+end)
+```
+
+---
+
+## 🛠️ UI Element Documentation
+
+### 🟥 Buttons
+Creates an interactive text button that fires a callback function instantly upon being clicked.
+```lua
+Window:CreateButton("[Button Name]", function()
+    -- [Your Code Here]
+end)
+```
+
+### 🟩 Toggles
+Creates a binary switch that tracks an on/off state, returning a boolean value (`true` or `false`) to the state parameter.
+```lua
+Window:CreateToggle("[Toggle Name]", function(state)
+    if state then
+        -- [Code for ON state]
+    else
+        -- [Code for OFF state]
+    end
+end)
+```
+
+### 🟦 Sliders
+Creates an adjustable slider component allowing fine-grain integer selections between defined bounds.
+```lua
 Window:CreateSlider("[Slider Name]", [MinValue], [MaxValue], [DefaultValue], function(value)
     -- [Your Code Here]
 end)
