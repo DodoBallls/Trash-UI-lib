@@ -9,3 +9,5 @@ local button = lib:CreateButton(window, "Print Text", function()
     print(textBox.Text)
 end)
 
+local toggled = false
+local toggle = lib:CreateToggle(window, "Spam Warn 'Hello'", false, function(toggleState)
