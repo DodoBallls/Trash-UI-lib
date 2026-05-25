@@ -18,40 +18,26 @@ Paste these code blocks underneath your main library loader to create tabs and i
 
 #### 1. Create a Tab
 ```lua
-local MainTab = lib:CreateTab("Main Cheats")
+local MainTab = lib:CreateTab("Tab Name")
 ```
 
-#### 2. Add a Button (Moon Gravity)
+#### 2. Add a Button
 ```lua
-MainTab:AddButton("Moon Gravity", function()
-    if workspace.Gravity == 196.2 then
-        workspace.Gravity = 30 -- Low moon gravity
-    else
-        workspace.Gravity = 196.2 -- Default Roblox gravity
-    end
+MainTab:AddButton("Button Name", function()
+    print("Button clicked!")
 end)
 ```
 
-#### 3. Add a Toggle (Infinite Jump)
+#### 3. Add a Toggle
 ```lua
-local InfiniteJumpEnabled = false
-game:GetService("UserInputService").JumpRequest:Connect(function()
-    if InfiniteJumpEnabled then
-        game:GetService("Players").LocalPlayer.Character:FindFirstChildOfClass('Humanoid'):ChangeState("Jumping")
-    end
-end)
-
-MainTab:AddToggle("Infinite Jump", function(state)
-    InfiniteJumpEnabled = state
+MainTab:AddToggle("Toggle Name", function(state)
+    print("Toggle state:", state)
 end)
 ```
 
-#### 4. Add a Slider (Speed Multiplier)
+#### 4. Add a Slider
 ```lua
-MainTab:AddSlider("WalkSpeed", 16, 250, 16, function(value)
-    local character = game:GetService("Players").LocalPlayer.Character
-    if character and character:FindFirstChild("Humanoid") then
-        character.Humanoid.WalkSpeed = value
-    end
+MainTab:AddSlider("Slider Name", 0, 100, 50, function(value)
+    print("Slider value:", value)
 end)
 ```
