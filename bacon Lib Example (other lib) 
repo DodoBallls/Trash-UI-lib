@@ -2,3 +2,5 @@ local lib = loadstring(game:HttpGet("https://raw.githubusercontent.com/bloodball
 local version, changelog = lib:GetInfo()
 local window = lib:CreateWindow("BaconLib v"..version)
 
+local label = lib:CreateLabel(window, "Main")
+local textBox = lib:CreateTextBox(window, Enum.Font.Legacy, "Text", "Hello, World!")
