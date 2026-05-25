@@ -14,31 +14,44 @@ local TrashLib = loadstring(game:HttpGet("https://raw.githubusercontent.com/Dodo
 ```
 ### 🚀 Adding UI Elements
 
-Paste these code blocks underneath your main library loader to instantly add a Button, Toggle, or Slider to your window.
+Paste these code blocks underneath your main library loader to create tabs and instantly add working components to your window.
 
-#### 1. Add a Button
+#### 1. Create a Tab
 ```lua
-lib:AddButton("Gravity switch", function()
+local MainTab = lib:CreateTab("Main Cheats")
+```
+
+#### 2. Add a Button (Moon Gravity)
+```lua
+MainTab:AddButton("Moon Gravity", function()
     if workspace.Gravity == 196.2 then
-        workspace.Gravity = 50
+        workspace.Gravity = 30 -- Low moon gravity
     else
-        workspace.Gravity = 196.2
+        workspace.Gravity = 196.2 -- Default Roblox gravity
     end
 end)
 ```
 
-#### 2. Add a Toggle
+#### 3. Add a Toggle (Infinite Jump)
 ```lua
-lib:AddToggle("Fly Hack", function(state)
-    print("Feature toggled:", state)
+local InfiniteJumpEnabled = false
+game:GetService("UserInputService").JumpRequest:Connect(function()
+    if InfiniteJumpEnabled then
+        game:GetService("Players").LocalPlayer.Character:FindFirstChildOfClass('Humanoid'):ChangeState("Jumping")
+    end
+end)
+
+MainTab:AddToggle("Infinite Jump", function(state)
+    InfiniteJumpEnabled = state
 end)
 ```
 
-#### 3. Add a Slider
+#### 4. Add a Slider (Speed Multiplier)
 ```lua
-lib:AddSlider("WalkSpeed", 16, 250, 16, function(value)
-    if game.Players.LocalPlayer.Character and game.Players.LocalPlayer.Character:FindFirstChild("Humanoid") then
-        game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = value
+MainTab:AddSlider("WalkSpeed", 16, 250, 16, function(value)
+    local character = game:GetService("Players").LocalPlayer.Character
+    if character and character:FindFirstChild("Humanoid") then
+        character.Humanoid.WalkSpeed = value
     end
 end)
 ```
