@@ -1,0 +1,128 @@
+-- Trash Lib Definition
+local TrashLib = {}
+
+function TrashLib:CreateWindow(titleText)
+    -- Main Screen Gui
+    local ScreenGui = Instance.new("ScreenGui")
+    ScreenGui.Name = "TrashLib_Gui"
+    ScreenGui.Parent = game:GetService("CoreGui") or game:GetService("Players").LocalPlayer:WaitForChild("PlayerGui")
+    ScreenGui.ResetOnSpawn = false
+
+    -- Main Window Frame
+    local Window = Instance.new("Frame")
+    Window.Name = "MainWindow"
+    Window.Size = UDim2.new(0, 300, 0, 200)
+    Window.Position = UDim2.new(0.4, 0, 0.4, 0)
+    Window.BackgroundColor3 = Color3.fromRGB(30, 30, 30) -- Dark theme
+    Window.BorderSizePixel = 2
+    Window.BorderColor3 = Color3.fromRGB(50, 50, 50)
+    Window.Active = true
+    Window.Draggable = true -- Allows moving the GUI
+    Window.Parent = ScreenGui
+
+    -- Title Bar
+    local Title = Instance.new("TextLabel")
+    Title.Name = "TitleBar"
+    Title.Size = UDim2.new(1, 0, 0, 30)
+    Title.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
+    Title.Text = titleText or "Trash Lib"
+    Title.TextColor3 = Color3.fromRGB(255, 255, 255)
+    Title.TextSize = 16
+    Title.Font = Enum.Font.SourceSansBold
+    Title.Parent = Window
+
+    -- Container for UI Elements (Buttons, etc.)
+    local Container = Instance.new("ScrollingFrame")
+    Container.Name = "Container"
+    Container.Size = UDim2.new(1, -10, 1, -40)
+    Container.Position = UDim2.new(0, 5, 0, 35)
+    Container.BackgroundTransparency = 1
+    Container.CanvasSize = UDim2.new(0, 0, 0, 0)
+    Container.AutomaticCanvasSize = Enum.AutomaticSize.Y
+    Container.ScrollBarThickness = 4
+    Container.Parent = Window
+
+    -- Automatic Layout for Buttons
+    local UIListLayout = Instance.new("UIListLayout")
+    UIListLayout.Padding = UDim.new(0, 5)
+    UIListLayout.SortOrder = Enum.SortOrder.LayoutOrder
+    UIListLayout.Parent = Container
+
+    -- RESIZE BUTTON (Bottom Right Corner)
+    local ResizeCorner = Instance.new("ImageButton")
+    ResizeCorner.Name = "ResizeCorner"
+    ResizeCorner.Size = UDim2.new(0, 15, 0, 15)
+    ResizeCorner.Position = UDim2.new(1, -15, 1, -15)
+    ResizeCorner.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
+    ResizeCorner.BackgroundTransparency = 0.5
+    ResizeCorner.ZIndex = 5
+    ResizeCorner.Parent = Window
+
+    -- Resize Logic Scripting
+    local UserInputService = game:GetService("UserInputService")
+    local draggingResize = false
+    local dragStartSize
+
+    ResizeCorner.InputBegan:Connect(function(input)
+        if input.UserInputType == Enum.UserInputType.MouseButton1 then
+            draggingResize = true
+            dragStartSize = Window.Size
+            
+            local connection
+            connection = UserInputService.InputChanged:Connect(function(changedInput)
+                if draggingResize and changedInput.UserInputType == Enum.UserInputType.MouseMovement then
+                    local delta = changedInput.Position - input.Position
+                    -- Set minimum size limits so it doesn't break (Min: 200x150)
+                    local newWidth = math.max(200, dragStartSize.X.Offset + delta.X)
+                    local newHeight = math.max(150, dragStartSize.Y.Offset + delta.Y)
+                    Window.Size = UDim2.new(0, newWidth, 0, newHeight)
+                else
+                    connection:Disconnect()
+                end
+            end)
+        end
+    end)
+
+    ResizeCorner.InputEnded:Connect(function(input)
+        if input.UserInputType == Enum.UserInputType.MouseButton1 then
+            draggingResize = false
+        end
+    end)
+
+    -- Define elements inside the window object
+    local WindowElements = {}
+
+    -- Function to Create a Button
+    function WindowElements:CreateButton(buttonText, callback)
+        local Button = Instance.new("TextButton")
+        Button.Name = buttonText.."_Btn"
+        Button.Size = UDim2.new(1, 0, 0, 30)
+        Button.BackgroundColor3 = Color3.fromRGB(45, 45, 45)
+        Button.TextColor3 = Color3.fromRGB(255, 255, 255)
+        Button.Text = buttonText
+        Button.Font = Enum.Font.SourceSans
+        Button.TextSize = 14
+        Button.BorderSizePixel = 0
+        Button.Parent = Container
+
+        -- Callback execution on click
+        Button.MouseButton1Click:Connect(function()
+            pcall(callback)
+        end)
+        
+        return Button
+    end
+
+    return WindowElements
+end
+
+-- ==========================================
+-- HOW TO USE YOUR NEW "TRASH LIB"
+-- ==========================================
+local win = TrashLib:CreateWindow("Trash Lib v1.0")
+
+win:CreateButton("Quick Reset", function()
+    if game.Players.LocalPlayer.Character and game.Players.LocalPlayer.Character:FindFirstChild("Head") then
+        game.Players.LocalPlayer.Character.Head:Destroy()
+    end
+end)
