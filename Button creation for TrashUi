@@ -1,0 +1,21 @@
+local ButtonModule = {}
+
+function ButtonModule:CreateButton(parentTab, text, callback)
+    local Button = Instance.new("TextButton")
+    Button.Size = UDim2.new(1, 0, 0, 30)
+    Button.BackgroundColor3 = Color3.fromRGB(35, 35, 35)
+    Button.Text = text
+    Button.TextColor3 = Color3.fromRGB(230, 230, 230)
+    Button.Font = Enum.Font.SourceSans
+    Button.TextSize = 14
+    Button.BorderSizePixel = 0
+    Button.Parent = parentTab
+
+    Button.MouseButton1Click:Connect(function()
+        pcall(callback)
+    end)
+    
+    return Button
+end
+
+return ButtonModule
