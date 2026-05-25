@@ -1,0 +1,51 @@
+local TabModule = {}
+local firstTab = true
+
+function TabModule:CreateTab(libraryElements, tabName)
+    local ContainerHolder = libraryElements.ContainerHolder
+    local Sidebar = libraryElements.Sidebar
+
+    local TabPage = Instance.new("ScrollingFrame")
+    TabPage.Name = tabName .. "_Page"
+    TabPage.Size = UDim2.new(1, -10, 1, -10)
+    TabPage.Position = UDim2.new(0, 5, 0, 5)
+    TabPage.BackgroundTransparency = 1
+    TabPage.ScrollBarThickness = 4
+    TabPage.Visible = firstTab
+    TabPage.Parent = ContainerHolder
+
+    local TabLayout = Instance.new("UIListLayout")
+    TabLayout.Padding = UDim.new(0, 6)
+    TabLayout.Parent = TabPage
+
+    local TabButton = Instance.new("TextButton")
+    TabButton.Size = UDim2.new(1, 0, 0, 28)
+    TabButton.BackgroundColor3 = firstTab and Color3.fromRGB(35, 35, 35) or Color3.fromRGB(20, 20, 20)
+    TabButton.Text = tabName
+    TabButton.TextColor3 = firstTab and Color3.fromRGB(255, 255, 255) or Color3.fromRGB(160, 160, 160)
+    TabButton.Font = Enum.Font.SourceSansBold
+    TabButton.TextSize = 13
+    TabButton.BorderSizePixel = 0
+    TabButton.Parent = Sidebar
+
+    firstTab = false
+
+    TabButton.MouseButton1Click:Connect(function()
+        for _, page in pairs(ContainerHolder:GetChildren()) do
+            if page:IsA("ScrollingFrame") then page.Visible = false end
+        end
+        for _, btn in pairs(Sidebar:GetChildren()) do
+            if btn:IsA("TextButton") then
+                btn.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
+                btn.TextColor3 = Color3.fromRGB(160, 160, 160)
+            end
+        end
+        TabPage.Visible = true
+        TabButton.BackgroundColor3 = Color3.fromRGB(35, 35, 35)
+        TabButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+    end)
+
+    return TabPage
+end
+
+return TabModule
