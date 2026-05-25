@@ -41,7 +41,7 @@ MainTab:AddSlider("Slider Name", 0, 100, 50, function(value)
     print("Slider value:", value)
 end)
 ```
-# Trash-UI-lib
+# Trash-UI-lib Fix if The previous isnt working
 
 ## Loader Fix
 
