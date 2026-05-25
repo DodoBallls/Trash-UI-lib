@@ -19,3 +19,18 @@ lib:NewDropdownButton(window, drop, "Print 'LOL'", function()
    print("LOL")
 end)
 
+lib:NewDropdownButton(window, drop, "Print 'YES'", function()
+   print("YES")
+end)
+
+lib:NewDropdownButton(window, drop, "Warn 'XD'", function()
+   warn("XD")
+end)
+
+local slider = lib:CreateSlider(window, "Print Value", 0, 100, 50, function(value)
+    print(value)
+end)
+
+local keybind = lib:CreateKeyBind(window, "Print Key", "z", function(key)
+    print(key)
+end)
