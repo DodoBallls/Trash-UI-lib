@@ -16,3 +16,6 @@ local toggle = lib:CreateToggle(window, "Spam Warn 'Hello'", false, function(tog
 
 local drop = lib:CreateDropdown(window, "Dropdown")
 lib:NewDropdownButton(window, drop, "Print 'LOL'", function()
+   print("LOL")
+end)
+
