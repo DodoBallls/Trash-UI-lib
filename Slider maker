@@ -1,0 +1,66 @@
+local SliderModule = {}
+
+function SliderModule:CreateSlider(parentTab, text, min, max, default, callback)
+    local UserInputService = game:GetService("UserInputService")
+    
+    local SliderFrame = Instance.new("Frame")
+    SliderFrame.Size = UDim2.new(1, 0, 0, 40)
+    SliderFrame.BackgroundColor3 = Color3.fromRGB(35, 35, 35)
+    SliderFrame.BorderSizePixel = 0
+    SliderFrame.Parent = parentTab
+
+    local Label = Instance.new("TextLabel")
+    Label.Size = UDim2.new(1, 0, 0, 20)
+    Label.Position = UDim2.new(0, 8, 0, 2)
+    Label.BackgroundTransparency = 1
+    Label.Text = text .. ": " .. default
+    Label.TextColor3 = Color3.fromRGB(230, 230, 230)
+    Label.Font = Enum.Font.SourceSans
+    Label.TextSize = 13
+    Label.TextXAlignment = Enum.TextXAlignment.Left
+    Label.Parent = SliderFrame
+
+    local BarContainer = Instance.new("TextButton")
+    BarContainer.Size = UDim2.new(1, -16, 0, 6)
+    BarContainer.Position = UDim2.new(0, 8, 0, 24)
+    BarContainer.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
+    BarContainer.Text = ""
+    BarContainer.BorderSizePixel = 0
+    BarContainer.Parent = SliderFrame
+
+    local Fill = Instance.new("Frame")
+    Fill.Size = UDim2.new((default - min) / (max - min), 0, 1, 0)
+    Fill.BackgroundColor3 = Color3.fromRGB(240, 150, 20)
+    Fill.BorderSizePixel = 0
+    Fill.Parent = BarContainer
+
+    local function updateSlider(input)
+        local currentX = input.Position.X - BarContainer.AbsolutePosition.X
+        local percentage = math.clamp(currentX / BarContainer.AbsoluteSize.X, 0, 1)
+        local value = math.round(min + (percentage * (max - min)))
+        
+        Fill.Size = UDim2.new(percentage, 0, 1, 0)
+        Label.Text = text .. ": " .. value
+        pcall(callback, value)
+    end
+
+    local sliding = false
+    BarContainer.InputBegan:Connect(function(input)
+        if input.UserInputType == Enum.UserInputType.MouseButton1 then
+            sliding = true
+            updateSlider(input)
+        end
+    end)
+    UserInputService.InputChanged:Connect(function(input)
+        if sliding and input.UserInputType == Enum.UserInputType.MouseMovement then
+            updateSlider(input)
+        end
+    end)
+    BarContainer.InputEnded:Connect(function(input)
+        if input.UserInputType == Enum.UserInputType.MouseButton1 then sliding = false end
+    end)
+
+    return SliderFrame
+end
+
+return SliderModule
