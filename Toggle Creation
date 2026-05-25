@@ -1,0 +1,33 @@
+local ToggleModule = {}
+
+function ToggleModule:CreateToggle(parentTab, text, callback)
+    local enabled = false
+
+    local ToggleFrame = Instance.new("TextButton")
+    ToggleFrame.Size = UDim2.new(1, 0, 0, 30)
+    ToggleFrame.BackgroundColor3 = Color3.fromRGB(35, 35, 35)
+    ToggleFrame.Text = "  " .. text
+    ToggleFrame.TextColor3 = Color3.fromRGB(230, 230, 230)
+    ToggleFrame.Font = Enum.Font.SourceSans
+    ToggleFrame.TextSize = 14
+    ToggleFrame.TextXAlignment = Enum.TextXAlignment.Left
+    ToggleFrame.BorderSizePixel = 0
+    ToggleFrame.Parent = parentTab
+
+    local Indicator = Instance.new("Frame")
+    Indicator.Size = UDim2.new(0, 16, 0, 16)
+    Indicator.Position = UDim2.new(1, -24, 0, 7)
+    Indicator.BackgroundColor3 = Color3.fromRGB(200, 50, 50)
+    Indicator.BorderSizePixel = 0
+    Indicator.Parent = ToggleFrame
+
+    ToggleFrame.MouseButton1Click:Connect(function()
+        enabled = not enabled
+        Indicator.BackgroundColor3 = enabled and Color3.fromRGB(50, 200, 50) or Color3.fromRGB(200, 50, 50)
+        pcall(callback, enabled)
+    end)
+
+    return ToggleFrame
+end
+
+return ToggleModule
