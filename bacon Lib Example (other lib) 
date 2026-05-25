@@ -14,3 +14,5 @@ local toggle = lib:CreateToggle(window, "Spam Warn 'Hello'", false, function(tog
     toggled = not toggled
     while toggled and game:GetService('RunService').Heartbeat:Wait() do
 
+local drop = lib:CreateDropdown(window, "Dropdown")
+lib:NewDropdownButton(window, drop, "Print 'LOL'", function()
