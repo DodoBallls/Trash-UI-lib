@@ -11,3 +11,6 @@ end)
 
 local toggled = false
 local toggle = lib:CreateToggle(window, "Spam Warn 'Hello'", false, function(toggleState)
+    toggled = not toggled
+    while toggled and game:GetService('RunService').Heartbeat:Wait() do
+
