@@ -12,7 +12,7 @@ print("Loading Trash UI...")
 
 local TrashLib = loadstring(game:HttpGet("https://raw.githubusercontent.com/DodoBallls/Trash-UI-lib/refs/heads/main/TRASH%20UI"))()
 ```
-### 🚀 Adding UI Elements (Arceus X Style)
+### 🚀 Adding UI Elements
 
 Paste these code blocks underneath your main library loader to instantly add a Button, Toggle, or Slider to your window.
 
