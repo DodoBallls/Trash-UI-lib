@@ -1,2 +1,4 @@
 local lib = loadstring(game:HttpGet("https://raw.githubusercontent.com/bloodball/-back-ups-for-libs/main/bacon"))()
 local version, changelog = lib:GetInfo()
+local window = lib:CreateWindow("BaconLib v"..version)
+
