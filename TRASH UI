@@ -17,7 +17,7 @@ function TrashLib:CreateWindow(titleText)
     Window.BorderSizePixel = 2
     Window.BorderColor3 = Color3.fromRGB(50, 50, 50)
     Window.Active = true
-    Window.Draggable = true -- Allows moving the GUI
+    Window.Draggable = true 
     Window.Parent = ScreenGui
 
     -- Title Bar
@@ -37,9 +37,11 @@ function TrashLib:CreateWindow(titleText)
     Container.Size = UDim2.new(1, -10, 1, -40)
     Container.Position = UDim2.new(0, 5, 0, 35)
     Container.BackgroundTransparency = 1
+    
+    -- FIX 1: Set a baseline scale size structure so Y-axis expansion functions properly
     Container.CanvasSize = UDim2.new(0, 0, 0, 0)
     Container.AutomaticCanvasSize = Enum.AutomaticSize.Y
-    Container.ScrollBarThickness = 4
+    Container.ScrollBarThickness = 6 -- Made slightly thicker to see it easily
     Container.Parent = Window
 
     -- Automatic Layout for Buttons
@@ -72,7 +74,6 @@ function TrashLib:CreateWindow(titleText)
             connection = UserInputService.InputChanged:Connect(function(changedInput)
                 if draggingResize and changedInput.UserInputType == Enum.UserInputType.MouseMovement then
                     local delta = changedInput.Position - input.Position
-                    -- Set minimum size limits so it doesn't break (Min: 200x150)
                     local newWidth = math.max(200, dragStartSize.X.Offset + delta.X)
                     local newHeight = math.max(150, dragStartSize.Y.Offset + delta.Y)
                     Window.Size = UDim2.new(0, newWidth, 0, newHeight)
@@ -96,7 +97,9 @@ function TrashLib:CreateWindow(titleText)
     function WindowElements:CreateButton(buttonText, callback)
         local Button = Instance.new("TextButton")
         Button.Name = buttonText.."_Btn"
-        Button.Size = UDim2.new(1, 0, 0, 30)
+        
+        -- FIX 2: Change width to scale (1, -12) to leave room for the scrolling bar!
+        Button.Size = UDim2.new(1, -12, 0, 30)
         Button.BackgroundColor3 = Color3.fromRGB(45, 45, 45)
         Button.TextColor3 = Color3.fromRGB(255, 255, 255)
         Button.Text = buttonText
@@ -110,6 +113,9 @@ function TrashLib:CreateWindow(titleText)
             pcall(callback)
         end)
         
+        -- FIX 3: Force layout engine updates right after adding any element
+        Container.CanvasSize = UDim2.new(0, 0, 0, UIListLayout.AbsoluteContentSize.Y)
+        
         return Button
     end
 
@@ -117,12 +123,12 @@ function TrashLib:CreateWindow(titleText)
 end
 
 -- ==========================================
--- HOW TO USE YOUR NEW "TRASH LIB"
+-- TEST: SPAWNING 20 BUTTONS TO FORCE SCROLLING
 -- ==========================================
 local win = TrashLib:CreateWindow("Trash Lib v1.0")
 
-win:CreateButton("Quick Reset", function()
-    if game.Players.LocalPlayer.Character and game.Players.LocalPlayer.Character:FindFirstChild("Head") then
-        game.Players.LocalPlayer.Character.Head:Destroy()
-    end
-end)
+for i = 1, 20 do
+    win:CreateButton("Button Number " .. tostring(i), function()
+        print("Clicked button " .. tostring(i))
+    end)
+end
